@@ -9,5 +9,11 @@ import java.util.UUID;
 @Repository
 public interface WorkflowStepRepository extends JpaRepository<WorkflowStep, UUID> {
     List<WorkflowStep> findByWorkflowId(UUID workflowId);
+
+    WorkflowStep findByWorkflowIdAndStepIndex(UUID workflowId, int stepIndex);
+
+    WorkflowStep findFirstByWorkflowIdOrderByStepIndexAsc(UUID workflowId);
+
+    WorkflowStep findFirstByWorkflowIdOrderByStepIndexDesc(UUID workflowId);
 }
 

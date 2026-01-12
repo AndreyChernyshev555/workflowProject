@@ -40,6 +40,9 @@ public class Workflow {
     @Column(nullable = false)
     private int currentStepIndex;
 
+    @Column(nullable = false)
+    private String label;
+
     private Instant startedAt;
     private Instant endedAt;
 }

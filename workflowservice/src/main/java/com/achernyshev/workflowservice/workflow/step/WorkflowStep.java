@@ -31,10 +31,16 @@ public class WorkflowStep {
     private UUID id;
 
     @Column(nullable = false)
+    private String definitionId;
+
+    @Column(nullable = false)
     private UUID workflowId;
 
     @Column(nullable = false)
     private String stepKey;
+
+    @Column(nullable = false)
+    private int stepIndex;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,4 +48,5 @@ public class WorkflowStep {
 
     private Instant startedAt;
     private Instant endedAt;
+
 }

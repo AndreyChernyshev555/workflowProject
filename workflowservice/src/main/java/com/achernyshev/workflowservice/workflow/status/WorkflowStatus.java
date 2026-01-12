@@ -1,7 +1,7 @@
 package com.achernyshev.workflowservice.workflow.status;
 
 public enum WorkflowStatus {
-    NEW,
+    CREATED,
     RUNNING,
     COMPLETED,
     FAILED
