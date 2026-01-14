@@ -1,5 +1,6 @@
 package com.achernyshev.workflowservice.workflow;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,18 +10,17 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/workflows")
+@RequiredArgsConstructor
 public class WorkflowController {
 
     private final WorkflowRepository workflowRepository;
 
-    public WorkflowController(WorkflowRepository workflowRepository) {
-        this.workflowRepository = workflowRepository;
-    }
+    private final WorkflowService workflowService;
 
     @PostMapping
-    public ResponseEntity<Workflow> createWorkflow(@RequestBody Workflow workflow) {
-        Workflow saved = workflowRepository.save(workflow);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    public ResponseEntity<UUID> createWorkflow(@RequestBody WorkflowRequest request) {
+        Workflow saved = workflowService.createWorkflow(request.getDefinitionId(), request.getLabel());
+        return new ResponseEntity<>(saved.getId(), HttpStatus.CREATED);
     }
 
     @GetMapping

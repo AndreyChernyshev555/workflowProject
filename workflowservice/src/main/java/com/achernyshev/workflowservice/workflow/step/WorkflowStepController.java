@@ -1,5 +1,6 @@
 package com.achernyshev.workflowservice.workflow.step;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,13 +10,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/workflow-steps")
+@RequiredArgsConstructor
 public class WorkflowStepController {
 
     private final WorkflowStepRepository stepRepository;
-
-    public WorkflowStepController(WorkflowStepRepository stepRepository) {
-        this.stepRepository = stepRepository;
-    }
 
     @PostMapping
     public ResponseEntity<WorkflowStep> createStep(@RequestBody WorkflowStep step) {

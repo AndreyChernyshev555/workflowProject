@@ -7,33 +7,83 @@ import com.achernyshev.workflowservice.workflow.status.WorkflowStatus;
 import com.achernyshev.workflowservice.workflow.step.WorkflowStep;
 import com.achernyshev.workflowservice.workflow.step.WorkflowStepRepository;
 import com.achernyshev.workflowservice.workflow.step.status.WorkflowStepStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class WorkflowService {
 
-    private WorkflowDefinitionRepository definitionRepository;
+    private final WorkflowDefinitionRepository definitionRepository;
 
-    private WorkflowRepository workflowRepository;
+    private final WorkflowRepository workflowRepository;
 
-    private WorkflowStepRepository workflowStepRepository;
+    private final WorkflowStepRepository workflowStepRepository;
 
-    public Workflow createWorkflow(String definitionId) {
-        WorkflowDefinition definition = definitionRepository.findById(definitionId);
+    private final WorkflowEventsProducer workflowEventsProducer;
 
-        Workflow workflow = new Workflow();
-        workflow.setDefinitionId(definitionId);
-        workflow.setStatus(WorkflowStatus.CREATED);
-        workflow.setCurrentStepIndex(0);
-        workflow = workflowRepository.save(workflow);
-
-        WorkflowStepDefinition stepDef = definition.getSteps().getFirst();
-
+    public WorkflowStep createWorkflowStep(WorkflowStepDefinition stepDef, Workflow workflow) {
         WorkflowStep step = new WorkflowStep();
+
         step.setWorkflowId(workflow.getId());
         step.setStepKey(stepDef.getStepKey());
         step.setStepIndex(stepDef.getStepIndex());
         step.setStatus(WorkflowStepStatus.ACTIVE);
-        workflowStepRepository.save(step);
 
+        return step;
+    }
+
+    public Workflow createWorkflow(String definitionId, String label) {
+        WorkflowDefinition definition = definitionRepository.findById(definitionId);
+
+        Workflow workflow = new Workflow();
+        workflow.setDefinitionId(definitionId);
+        workflow.setStatus(WorkflowStatus.RUNNING);
+        workflow.setCurrentStepIndex(0);
+        workflow.setLabel(label);
+        workflow = workflowRepository.save(workflow);
+
+        WorkflowStepDefinition stepDef = definition.getSteps().getFirst();
+
+        WorkflowStep step = createWorkflowStep(stepDef, workflow);
+        workflowStepRepository.save(step);
+        workflowEventsProducer.createTaskForStep(
+                workflow.getId(),
+                workflow.getCurrentStepIndex(),
+                workflow.getLabel(),
+                stepDef.getName()
+        );
         return workflow;
+    }
+
+    public void setNextStep(Workflow workflow) {
+        WorkflowDefinition definition = definitionRepository.findById(workflow.getDefinitionId());
+
+        WorkflowStep madeStep = workflowStepRepository.findByWorkflowIdAndStepIndex(
+                workflow.getId(),
+                workflow.getCurrentStepIndex()
+        );
+
+        madeStep.setStatus(WorkflowStepStatus.COMPLETED);
+        workflowStepRepository.save(madeStep);
+
+        if ((workflow.getCurrentStepIndex() + 1) == definition.getSteps().size()) {
+            workflow.setStatus(WorkflowStatus.COMPLETED);
+            workflowRepository.save(workflow);
+            return;
+        }
+
+        final int newStepIndex = workflow.getCurrentStepIndex() + 1;
+        workflow.setCurrentStepIndex(newStepIndex);
+
+        WorkflowStepDefinition stepDef = definition.getSteps().get(newStepIndex);
+        WorkflowStep step = createWorkflowStep(stepDef, workflow);
+        workflowStepRepository.save(step);
+        workflowEventsProducer.createTaskForStep(
+                workflow.getId(),
+                workflow.getCurrentStepIndex(),
+                workflow.getLabel(),
+                stepDef.getName()
+        );
     }
 }

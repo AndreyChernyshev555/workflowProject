@@ -1,4 +1,4 @@
-package com.achernyshev.workflowservice.workflow;
+package com.achernyshev.taskservice.task;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class WorkflowEventsProducer {
+public class TaskEventsProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void createTaskForStep(
@@ -17,7 +17,7 @@ public class WorkflowEventsProducer {
             String workflowName,
             String stepName
     ) {
-        WorkflowTaskEvent event = new WorkflowTaskEvent(workflowId, stepIndex, workflowName, stepName);
-        kafkaTemplate.send("task-events", event);
+//        WorkflowTaskEvent event = new WorkflowTaskEvent(workflowId, stepIndex, workflowName, stepName);
+//        kafkaTemplate.send("task-events", event);
     }
 }

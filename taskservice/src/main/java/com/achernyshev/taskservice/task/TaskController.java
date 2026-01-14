@@ -1,5 +1,6 @@
 package com.achernyshev.taskservice.task;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,13 +10,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
+@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskRepository taskRepository;
-
-    public TaskController(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
 
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
@@ -43,7 +41,7 @@ public class TaskController {
                     existingTask.setType(updatedTask.getType());
                     existingTask.setStatus(updatedTask.getStatus());
                     existingTask.setWorkflowId(updatedTask.getWorkflowId());
-                    existingTask.setStepId(updatedTask.getStepId());
+                    existingTask.setCurrentStepIndex(updatedTask.getCurrentStepIndex());
                     existingTask.setAssigneeId(updatedTask.getAssigneeId());
                     existingTask.setPayload(updatedTask.getPayload());
                     existingTask.setCreatedAt(updatedTask.getCreatedAt());

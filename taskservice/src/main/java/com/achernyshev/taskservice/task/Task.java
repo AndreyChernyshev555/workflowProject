@@ -34,7 +34,7 @@ public class Task {
     private UUID workflowId;
 
     @Column(nullable = false)
-    private UUID stepId;
+    private int currentStepIndex;
 
     @Column(nullable = false)
     private String type;
