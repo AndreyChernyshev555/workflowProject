@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/taskservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/taskservice.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/userservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/userservice.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/workflowProject.iml" filepath="$PROJECT_DIR$/.idea/workflowProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/workflowservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/workflowservice.main.iml" />
     </modules>
   </component>
 </project>

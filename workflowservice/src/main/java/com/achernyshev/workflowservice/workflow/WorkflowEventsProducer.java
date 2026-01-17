@@ -18,6 +18,6 @@ public class WorkflowEventsProducer {
             String stepName
     ) {
         WorkflowTaskEvent event = new WorkflowTaskEvent(workflowId, stepIndex, workflowName, stepName);
-        kafkaTemplate.send("task-events", event);
+        kafkaTemplate.send("workflow-step-task-start", event);
     }
 }

@@ -37,7 +37,7 @@ public class Task {
     private int currentStepIndex;
 
     @Column(nullable = false)
-    private String type;
+    private String label;
 
     private UUID assigneeId;
 

@@ -11,13 +11,13 @@ import java.util.UUID;
 public class TaskEventsProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void createTaskForStep(
+    public void endTaskStep(
             UUID workflowId,
             int stepIndex,
             String workflowName,
             String stepName
     ) {
-//        WorkflowTaskEvent event = new WorkflowTaskEvent(workflowId, stepIndex, workflowName, stepName);
-//        kafkaTemplate.send("task-events", event);
+        TaskEvent event = new TaskEvent(workflowId, stepIndex, workflowName, stepName);
+        kafkaTemplate.send("workflow-step-task-end", event);
     }
 }

@@ -1,5 +1,6 @@
 package com.achernyshev.taskservice.task;
 
+import com.achernyshev.taskservice.task.status.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import java.util.UUID;
 public class TaskController {
 
     private final TaskRepository taskRepository;
+
+    private final TaskService taskService;
 
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
@@ -38,7 +41,7 @@ public class TaskController {
     public ResponseEntity<Task> updateTask(@PathVariable UUID id, @RequestBody Task updatedTask) {
         return taskRepository.findById(id)
                 .map(existingTask -> {
-                    existingTask.setType(updatedTask.getType());
+                    existingTask.setLabel(updatedTask.getLabel());
                     existingTask.setStatus(updatedTask.getStatus());
                     existingTask.setWorkflowId(updatedTask.getWorkflowId());
                     existingTask.setCurrentStepIndex(updatedTask.getCurrentStepIndex());
@@ -46,8 +49,12 @@ public class TaskController {
                     existingTask.setPayload(updatedTask.getPayload());
                     existingTask.setCreatedAt(updatedTask.getCreatedAt());
                     existingTask.setCompletedAt(updatedTask.getCompletedAt());
-
                     Task saved = taskRepository.save(existingTask);
+
+                    if (existingTask.getStatus() == TaskStatus.COMPLETED) {
+                        taskService.onTaskCompleted(existingTask);
+                    }
+
                     return ResponseEntity.ok(saved);
                 })
                 .orElse(ResponseEntity.notFound().build());
