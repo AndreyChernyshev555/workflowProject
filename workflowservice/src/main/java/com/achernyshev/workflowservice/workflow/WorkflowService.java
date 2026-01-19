@@ -34,7 +34,10 @@ public class WorkflowService {
     }
 
     public Workflow createWorkflow(String definitionId, String label) {
-        WorkflowDefinition definition = definitionRepository.findById(definitionId);
+        var definitionOptional = definitionRepository.findById(definitionId);
+        WorkflowDefinition definition = null;
+        if (definitionOptional.isPresent())  definition = definitionOptional.get();
+        else return null;
 
         Workflow workflow = new Workflow();
         workflow.setDefinitionId(definitionId);
@@ -57,7 +60,10 @@ public class WorkflowService {
     }
 
     public void setNextStep(Workflow workflow) {
-        WorkflowDefinition definition = definitionRepository.findById(workflow.getDefinitionId());
+        var definitionOptional = definitionRepository.findById(workflow.getDefinitionId());
+        WorkflowDefinition definition = null;
+        if (definitionOptional.isPresent())  definition = definitionOptional.get();
+        else return;
 
         WorkflowStep madeStep = workflowStepRepository.findByWorkflowIdAndStepIndex(
                 workflow.getId(),

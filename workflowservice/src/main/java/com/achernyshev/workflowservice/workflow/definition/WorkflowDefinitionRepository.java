@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface WorkflowDefinitionRepository extends JpaRepository<WorkflowDefinition, UUID> {
-    WorkflowDefinition findById(String definitionId);
+public interface WorkflowDefinitionRepository extends JpaRepository<WorkflowDefinition, String> {
+
 }
 

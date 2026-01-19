@@ -14,6 +14,7 @@ import java.util.List;
 public class WorkflowDefinition {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false)

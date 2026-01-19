@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const useTaskStore = defineStore('counter', {
+export const useTaskStore = defineStore('task', {
   state: () => {
     return { task: null }
   },

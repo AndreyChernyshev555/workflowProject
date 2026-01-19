@@ -8,6 +8,8 @@ services:
       POSTGRES_DB: workflowdb
       POSTGRES_USER: workflow
       POSTGRES_PASSWORD: workflow
+    volumes:
+      - pgdata-workflow:/var/lib/postgresql/data
 
   postgres-task:
     image: postgres:17.7
@@ -15,6 +17,8 @@ services:
       POSTGRES_DB: taskdb
       POSTGRES_USER: task
       POSTGRES_PASSWORD: task
+    volumes:
+      - pgdata-task:/var/lib/postgresql/data
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.2
@@ -78,4 +82,5 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
-  pgdata:
+  pgdata-workflow:
+  pgdata-task:
