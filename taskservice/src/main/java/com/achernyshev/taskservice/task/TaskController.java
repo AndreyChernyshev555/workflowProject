@@ -46,7 +46,6 @@ public class TaskController {
                     existingTask.setWorkflowId(updatedTask.getWorkflowId());
                     existingTask.setCurrentStepIndex(updatedTask.getCurrentStepIndex());
                     existingTask.setAssigneeId(updatedTask.getAssigneeId());
-                    existingTask.setPayload(updatedTask.getPayload());
                     existingTask.setCreatedAt(updatedTask.getCreatedAt());
                     existingTask.setCompletedAt(updatedTask.getCompletedAt());
                     Task saved = taskRepository.save(existingTask);

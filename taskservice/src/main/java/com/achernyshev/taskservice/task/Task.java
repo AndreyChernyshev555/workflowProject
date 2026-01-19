@@ -45,9 +45,6 @@ public class Task {
     @Column(nullable = false)
     private TaskStatus status;
 
-    @Column(columnDefinition = "jsonb")
-    private String payload;
-
     private Instant createdAt;
     private Instant completedAt;
 }

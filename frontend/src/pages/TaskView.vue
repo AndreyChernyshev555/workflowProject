@@ -1,28 +1,41 @@
 <script setup>
-import { useTaskStore } from '@/stores/TaskStore.js'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import TaskAPI from '@/api/TaskAPI.js'
+import TaskStatuses from '@/domain/TaskStatuses.js'
 
-const taskStore = useTaskStore()
-const task = ref({
-  label: 'mock',
-  status: { id: 'BASE2', label: 'Логистика' },
-})
-const taskStatuses = [
-  { id: 'BASE', label: 'Основной' },
-  { id: 'BASE2', label: 'Логистика' },
+const tasks = ref([])
+const taskColumns = [
+  {
+    name: 'label',
+    label: 'Название',
+    align: 'left',
+    field: 'label',
+  },
+  {
+    name: 'status',
+    label: 'Статус',
+    align: 'left',
+    field: (row) => TaskStatuses[row.status],
+    sortable: true,
+  },
+  {
+    name: 'actions',
+    label: 'Действия',
+    align: 'center',
+    field: 'actions',
+    sortable: false,
+  },
 ]
+
+onMounted(async () => {
+  tasks.value = await TaskAPI.getAllTasks()
+  console.log(tasks)
+})
 </script>
 
 <template>
   <q-page class="page">
-    <q-card class="task-card">
-      <q-card-section>
-        {{ task.label }}
-      </q-card-section>
-      <q-card-section>
-        <q-select v-model="task.status" :options="taskStatuses" label="Статус" />
-      </q-card-section>
-    </q-card>
+    <q-table class="full-width q-mx-lg" :rows="tasks" :columns="taskColumns" row-key="id" />
   </q-page>
 </template>
 

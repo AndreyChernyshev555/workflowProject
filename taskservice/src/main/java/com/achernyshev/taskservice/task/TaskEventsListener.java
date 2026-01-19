@@ -17,7 +17,7 @@ public class TaskEventsListener {
     private final TaskRepository taskRepository;
 
     @KafkaListener(topics = "workflow-step-task-start", groupId = "workflow-service")
-    public void onNewStep(TaskEvent event) {
+    public void onNewStep(WorkflowTaskEventDto event) {
         log.info("Started step: {}", event);
         Task newTask = new Task();
         newTask.setWorkflowId(event.getWorkflowId());

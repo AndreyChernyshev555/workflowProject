@@ -26,6 +26,7 @@ public class WorkflowService {
         WorkflowStep step = new WorkflowStep();
 
         step.setWorkflowId(workflow.getId());
+        step.setDefinitionId(workflow.getDefinitionId());
         step.setStepKey(stepDef.getStepKey());
         step.setStepIndex(stepDef.getStepIndex());
         step.setStatus(WorkflowStepStatus.ACTIVE);

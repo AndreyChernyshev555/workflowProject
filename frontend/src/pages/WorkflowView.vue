@@ -12,7 +12,7 @@ const tab = ref(null)
       <q-tab name="template" label="Шаблоны" />
       <q-tab name="processes" label="Процессы" />
     </q-tabs>
-    <q-tab-panels v-model="tab" animated>
+    <q-tab-panels v-model="tab" animated class="full-width">
       <q-tab-panel name="template">
         <workflow-templates />
       </q-tab-panel>
@@ -23,4 +23,5 @@ const tab = ref(null)
   </q-page>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

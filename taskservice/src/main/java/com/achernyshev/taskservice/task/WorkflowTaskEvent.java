@@ -1,4 +1,4 @@
-package com.achernyshev.workflowservice.workflow;
+package com.achernyshev.taskservice.task;
 
 import lombok.*;
 

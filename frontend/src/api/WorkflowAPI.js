@@ -7,6 +7,10 @@ export default class WorkflowAPI {
     const result = await axios.get(defBaseUrl)
     return result.data
   }
+  static async createWorkflowTemplate(workflowTemplate) {
+    const result = await axios.post(defBaseUrl, workflowTemplate)
+    return result.data
+  }
   static async updateWorkflowTemplate(workflowTemplate) {
     const result = await axios.put(`${defBaseUrl}/${workflowTemplate.id}`, workflowTemplate)
     return result.data
@@ -15,12 +19,19 @@ export default class WorkflowAPI {
     const result = await axios.delete(`${defBaseUrl}/${workflowTemplate.id}`)
     return result.data
   }
-  static async createWorkflowTemplate(workflowTemplate) {
-    const result = await axios.post(defBaseUrl, workflowTemplate)
+  static async getAllWorkflows() {
+    const result = await axios.get(workflowBaseUrl)
     return result.data
   }
-  static async createWorkflow(workflowTypeId) {
-    const result = await axios.post(workflowBaseUrl, workflowTypeId)
+  static async createWorkflow(workflowType) {
+    const result = await axios.post(workflowBaseUrl, {
+      definitionId: workflowType.id,
+      label: workflowType.name,
+    })
+    return result.data
+  }
+  static async deleteWorkflow(workflow) {
+    const result = await axios.delete(`${workflowBaseUrl}/${workflow.id}`)
     return result.data
   }
 }
